@@ -1,0 +1,5 @@
+/.idea/
+/vendor/
+index.php
+composer.phar
+*.code-workspace
