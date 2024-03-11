@@ -1,9 +1,22 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Northrook\Core;
 
-use ZxcvbnPhp\Zxcvbn;
+use ZxcvbnPhp\Zxcvbn as Validator;
 
+/**
+ * A zxcvbn-based password validator.
+ *
+ * @author  Martin Nielsen <mn@northrook.com>
+ *
+ * @link    https://github.com/northrook Documentation
+ * @todo    Update URL to documentation
+ *
+ * @link https://github.com/bjeavons/zxcvbn-php PHP Documentation
+ * @link https://github.com/dropbox/zxcvbn Base Documentation
+ */
 final class PasswordValidator
 {
     private const STRENGTH_MAP = [
@@ -14,11 +27,11 @@ final class PasswordValidator
         4 => 'STRONG',
     ];
 
-    private readonly object $result;
+    private readonly object $validator;
 
     public readonly int    $strength;
     public readonly string $label;
-    public readonly int    $guesses;
+    public readonly float    $guesses;
     public readonly ?string $warning;
     public readonly ?array $suggestions;
 
@@ -26,13 +39,13 @@ final class PasswordValidator
         string $password,
         array  $context = [],
     ) {
-        $this->result = (object) ( new Zxcvbn() )->passwordStrength( $password, $context );
+        $this->validator = (object) ( new Validator() )->passwordStrength( $password, $context );
 
-        $this->strength = $this->result->score;
+        $this->strength = $this->validator->score;
         $this->label    = self::STRENGTH_MAP[ $this->strength ];
-        $this->guesses  = $this->result->guesses;
-        $this->warning  = $this->result->feedback['warning'];
-        $this->suggestions = $this->result->feedback['suggestions'];
+        $this->guesses  = $this->validator->guesses;
+        $this->warning  = $this->validator->feedback[ 'warning'];
+        $this->suggestions = $this->validator->feedback[ 'suggestions'];
     }
 
     public function timeToCrack( ?string $scenario = null ) : object {
@@ -45,8 +58,8 @@ final class PasswordValidator
         };
 
         return (object) [
-            'seconds'  => $this->result->crack_times_seconds[ $scenario ],
-            'label' => $this->result->crack_times_display[ $scenario ],
+            'seconds'  => $this->validator->crack_times_seconds[ $scenario ],
+            'label' => $this->validator->crack_times_display[ $scenario ],
         ];
     }
 }
