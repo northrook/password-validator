@@ -74,14 +74,14 @@ The `Result` object also has twh methods:
 // Validate the password against a given strength score.
 $result->validate( int $strength ):bool
 
- // Get the time to crack the password, in seconds by default.
+// Get the time to crack the password, in seconds by default.
 $time = $result->timeToCrack(
     ?string $scenario = 'online_throttling',  // The zxcvbn-php scenario to use.
     string  $return = 'RETURN_SECONDS',       // RETURN_SECONDS, RETURN_LABEL, RETURN_BOTH as object{seconds:int, label:string}.
 ):int|string|obj
 
 $time->seconds; // 173052000000
-$time->label;  // "centuries"
+$time->label;   // "centuries"
 ```
 
 ## License
