@@ -38,7 +38,7 @@ Use the `validate()` method to validate a given password, returning a `Result` o
 > In the example below, we get a score of `3`, despite several matches in the `$context`.
 
 ```php
-use Northrook\Core\PasswordValidator;
+use Northrook\PasswordValidator;
 
 // Optional context for all validations.
 $globalContext = [
@@ -48,13 +48,13 @@ $globalContext = [
 $validator = new PasswordValidator( $globalContext );
 
 $password = 'example-01-user';
-$context = [
-    'username' => 'Example User',
-    'email'    => 'user@example.com',
+$context  = [
+    'username'  => 'Example User',
+    'email'     => 'user@example.com',
     'birthdate' => '1980-01-01',
 ];
 
-$result = $validator->validate( $password, $context ) : Result;
+$result = $validator->validate( $password, $context ) : Result
 ```
 
 The `Result` object validates the password using the `zxcvbn-php` library, and sets the following read-only properties:
@@ -77,7 +77,7 @@ $result->validate( int $strength ):bool
 // Get the time to crack the password, in seconds by default.
 $time = $result->timeToCrack(
     ?string $scenario = 'online_throttling',  // The zxcvbn-php scenario to use.
-    string  $return = 'RETURN_SECONDS',       // RETURN_SECONDS, RETURN_LABEL, RETURN_BOTH as object{seconds:int, label:string}.
+     string $return = 'RETURN_SECONDS',       // RETURN_SECONDS, RETURN_LABEL, RETURN_BOTH as object{seconds:int, label:string}.
 ):int|string|obj
 
 $time->seconds; // 173052000000
